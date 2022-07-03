@@ -3,18 +3,30 @@
 **/
 
 const { model, Schema } = require('mongoose')
-const SampleSchema = new Schema({
+const UserSchema = new Schema({
   id: {
     type: Number,
     required: true,
     default: 0
   },
-  compound_index_a: {
+  email_address: {
     type: String,
     required: true
   },
-  compound_index_b: {
-    type: Number,
+  first_name: {
+    type: String,
+    required: true
+  },
+  last_name: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
     required: true
   },
   //
@@ -45,4 +57,4 @@ const SampleSchema = new Schema({
   }
 })
 
-model('Sample', SampleSchema)
+model('User', UserSchema)
