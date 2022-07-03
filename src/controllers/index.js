@@ -46,6 +46,7 @@ class Controller {
       }
     } catch (e) {
       this.logger.error(e.message, 'createRecord')
+      throw new Error(e.message)
     }
   }
 
@@ -70,6 +71,7 @@ class Controller {
       })
     } catch (e) {
       this.logger.error(e.message, 'readRecords')
+      throw new Error(e.message)
     }
   }
 
@@ -89,6 +91,7 @@ class Controller {
       return this.jsonize({ ...result, data })
     } catch (e) {
       this.logger.error(e.message, 'updateRecords')
+      throw new Error(e.message)
     }
   }
 
@@ -108,6 +111,7 @@ class Controller {
       return this.jsonize(result)
     } catch (e) {
       this.logger.error(e.message, 'deleteRecords')
+      throw new Error(e.message)
     }
   }
 }
