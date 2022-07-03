@@ -28,7 +28,7 @@ class Controller {
   }
 
   async setUniqueKey (model, _id, time_stamp) {
-    const n = (await model.estimatedDocumentCount({ time_stamp: { $lt: time_stamp } })) + 1
+    const n = (await model.estimatedDocumentCount({ time_stamp: { $lt: time_stamp } }))
     await model.updateOne({ _id }, { id: n })
     return n
   }

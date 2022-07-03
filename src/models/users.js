@@ -29,6 +29,15 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  status: {
+    type: String,
+    enum: ['invited', 'removed', 'accepted']
+  },
+  tenant_id: {
+    type: Number,
+    required: true
+  },
+
   //
   is_active: {
     type: Boolean,

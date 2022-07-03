@@ -28,6 +28,10 @@ const FlagSchema = new Schema({
       value: Boolean
     }]
   }],
+  tenant_id: {
+    type: Number,
+    required: true
+  },
 
   //
   is_active: {

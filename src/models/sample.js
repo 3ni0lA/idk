@@ -3,28 +3,20 @@
 **/
 
 const { model, Schema } = require('mongoose')
-const RoleSchema = new Schema({
+const SampleSchema = new Schema({
   id: {
     type: Number,
     required: true,
     default: 0
   },
-  environments: [{
-    code: String,
-    value: {
-      type: String,
-      enum: ['read', 'write', 'execute']
-    }
-  }],
-  name: {
+  email_address: {
     type: String,
     required: true
   },
-  tenant_id: {
-    type: Number,
+  first_name: {
+    type: String,
     required: true
   },
-
   //
   is_active: {
     type: Boolean,
@@ -53,4 +45,4 @@ const RoleSchema = new Schema({
   }
 })
 
-model('Role', RoleSchema)
+model('Sample', SampleSchema)
