@@ -9,15 +9,7 @@ const TenantSchema = new Schema({
     required: true,
     default: 0
   },
-  email_address: {
-    type: String,
-    required: true
-  },
   name: {
-    type: String,
-    required: true
-  },
-  password: {
     type: String,
     required: true
   },

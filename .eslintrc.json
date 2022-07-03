@@ -16,5 +16,8 @@
     ],
     "rules": {
         "camelcase": "off"
-    }
+    },
+    "ignorePatterns": [
+        "**/test/**/*js"
+    ]
 }

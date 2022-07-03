@@ -31,6 +31,17 @@ class RootService {
     )
   }
 
+  processCreationResult (result, event_name) {
+    if (result && result._id) {
+      if (event_name) {
+        appEvent.emit(event_name, result)
+      }
+      return this.processSuccessfulResponse(result, 201)
+    }
+
+    return this.processFailedResponse('Failed to created record', 422)
+  }
+
   processSingleRead (result) {
     if (result && result.id) return this.processSuccessfulResponse(result)
     return this.processFailedResponse('Resource not found', 404)

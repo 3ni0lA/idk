@@ -32,12 +32,12 @@ const UserSchema = new Schema({
     required: true
   },
   role: {
-    type: Number,
-    required: true
+    type: Number
   },
   status: {
     type: String,
-    enum: ['invited', 'removed', 'accepted']
+    enum: ['invited', 'removed', 'accepted'],
+    default: 'invited'
   },
   tenant_id: {
     type: Number,
@@ -48,7 +48,7 @@ const UserSchema = new Schema({
   is_active: {
     type: Boolean,
     required: true,
-    default: true
+    default: false
   },
   is_deleted: {
     type: Boolean,
