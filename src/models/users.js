@@ -7,15 +7,21 @@ const UserSchema = new Schema({
   id: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
+    index: true
   },
   email_address: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   first_name: {
-    type: String,
-    required: true
+    type: String
+  },
+  is_super_admin: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   last_name: {
     type: String,
