@@ -13,10 +13,12 @@ const {
 /** Route Handlers */
 const sample_route_handler = require('./sample')
 const role_route_handler = require('./role')
+const tenant_route_handler = require('./tenant')
 
 /** Cross Origin Handling */
 router.use(setupRequest)
 router.use('/roles', role_route_handler)
+router.use('/tenants', tenant_route_handler)
 router.use('/samples', sample_route_handler)
 router.use(processResponse)
 

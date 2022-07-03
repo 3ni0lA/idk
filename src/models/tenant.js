@@ -21,10 +21,6 @@ const TenantSchema = new Schema({
     type: String,
     required: true
   },
-  tenant_id: {
-    type: Number,
-    required: true
-  },
 
   //
   is_active: {
