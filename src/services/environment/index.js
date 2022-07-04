@@ -1,6 +1,6 @@
 /**
  * @author Oguntuberu Nathan O. <nateoguns.work@gmail.com>
-**/
+ **/
 //
 const RootService = require('../_root')
 const Controller = require('../../controllers')
@@ -10,15 +10,10 @@ const { generateCodeFromName } = require('../../utilities/generic')
 const { app_logger } = require('../../utilities/logger')
 const logger = app_logger('EnvironmentService')
 
-const {
-  buildQuery,
-  buildWildcardOptions
-} = require('../../utilities/query')
+const { buildQuery, buildWildcardOptions } = require('../../utilities/query')
 
 class EnvironmentService extends RootService {
-  constructor (
-    environment_controller
-  ) {
+  constructor (environment_controller) {
     /** */
     super()
 
@@ -28,14 +23,14 @@ class EnvironmentService extends RootService {
 
   async createRecord (request, next) {
     try {
-      const { body } = request
+      const { body, tenant_id } = request
       const { error } = environmentSchema.validate(body)
 
       if (error) throw new Error(error)
 
-      const code = generateCodeFromName(body.name)
+      const code = generateCodeFromName(body.code || body.name)
       delete body.id
-      const result = await this.environment_controller.createRecord({ ...body, code })
+      const result = await this.environment_controller.createRecord({ ...body, code, tenant_id })
       return this.processSingleRead(result)
     } catch (e) {
       logger.error(e.message, 'createRecord')

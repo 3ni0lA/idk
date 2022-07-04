@@ -11,6 +11,14 @@ try {
       request.payload = await userService.createRecord(request, next)
       next()
     })
+    .post('/invite', async (request, __, next) => {
+      request.payload = await userService.invite(request, next)
+      next()
+    })
+    .post('/remove', async (request, __, next) => {
+      request.payload = await userService.remove(request, next)
+      next()
+    })
     .get('/', async (request, __, next) => {
       request.payload = await userService.readRecordsByFilter(request, next)
       next()

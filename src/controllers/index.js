@@ -75,7 +75,7 @@ class Controller {
     }
   }
 
-  async updateRecords (conditions, data) {
+  async updateRecords (conditions, data, options = {}) {
     try {
       const data_to_set = this.deleteRecordMetadata(data)
       const result = await this.Model.updateMany(
@@ -85,6 +85,10 @@ class Controller {
         {
           ...data_to_set,
           $currentDate: { updated_on: true }
+        },
+        {
+          multi: options.multi,
+          arrayFilters: options.arrayFilters
         }
       )
 

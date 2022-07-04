@@ -10,7 +10,7 @@ const userController = new Controller('User')
 const { app_logger } = require('../../utilities/logger')
 const logger = app_logger('GuestService')
 
-const { checkPasswordMatch, encryptPassword, generateAuthenticationToken, validatePassword } = require('./helper')
+const { checkPasswordMatch, encryptPassword, generateAuthenticationToken, validatePassword } = require('../../utilities/encryption')
 const { sendEmail } = require('../_email')
 
 class GuestService extends _RootService {
@@ -29,17 +29,55 @@ class GuestService extends _RootService {
       }
 
       const user_updation = await this.user_controller.updateRecords({ _id: key }, { is_active: true })
-      const { ok, nModified } = user_updation
-      if (ok && nModified) {
+      const { acknowledged, modifiedCount } = user_updation
+      if (acknowledged && modifiedCount) {
         return this.processSuccessfulResponse('Account Activation successful.')
       }
 
-      if (ok && !nModified) {
+      if (acknowledged && !modifiedCount) {
         return this.processSuccessfulResponse('Account is already activated.')
       }
       return this.processFailedResponse('Update failed', 500)
     } catch (e) {
       logger.console(e.message, 'activateRecord')
+      const err = this.processFailedResponse(e.message, 500)
+      next(err)
+    }
+  }
+
+  async acceptInvitation (request, next) {
+    try {
+      const { params: { tenant_id, user_id } } = request
+      if (!tenant_id || !user_id) {
+        return this.processFailedResponse('Invalid request', 400)
+      }
+
+      const user_updation = await this.user_controller.updateRecords({ _id: user_id },
+        {
+          $set: {
+            'tenants.$[element].status': 'accepted'
+          }
+        },
+        {
+          multi: true,
+          arrayFilters: [
+            {
+              'element.id': { $in: [tenant_id] },
+              'element.status': 'invited'
+            }
+          ]
+        })
+      const { acknowledged, modifiedCount } = user_updation
+      if (acknowledged && modifiedCount) {
+        return this.processSuccessfulResponse('Acceptance successful.')
+      }
+
+      if (acknowledged && !modifiedCount) {
+        return this.processSuccessfulResponse('Already accepted.')
+      }
+      return this.processFailedResponse('Acceptance failed', 500)
+    } catch (e) {
+      logger.console(e.message, 'acceptInvitation')
       const err = this.processFailedResponse(e.message, 500)
       next(err)
     }
@@ -101,8 +139,12 @@ class GuestService extends _RootService {
         last_name,
         password: encrypted_password,
         is_super_admin: true,
-        status: 'accepted',
-        tenant_id
+        tenants: [
+          {
+            id: tenant_id,
+            status: 'accepted'
+          }
+        ]
       })
 
       await sendEmail(validated_email, user_id, 'activation')
@@ -197,7 +239,9 @@ class GuestService extends _RootService {
 
         const password_is_correct = await checkPasswordMatch(validated_password, user_record.password)
         if (password_is_correct) {
-          const authentication_token = await generateAuthenticationToken(validatePassword)
+          const authentication_token = await generateAuthenticationToken({
+            ...user_record
+          })
           return this.processSuccessfulResponse({
             ...user_record,
             token: authentication_token

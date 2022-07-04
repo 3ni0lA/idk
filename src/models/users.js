@@ -34,15 +34,14 @@ const UserSchema = new Schema({
   role: {
     type: Number
   },
-  status: {
-    type: String,
-    enum: ['invited', 'removed', 'accepted'],
-    default: 'invited'
-  },
-  tenant_id: {
-    type: Number,
-    required: true
-  },
+  tenants: [{
+    id: Number,
+    status: {
+      type: String,
+      enum: ['invited', 'removed', 'accepted'],
+      default: 'invited'
+    }
+  }],
 
   //
   is_active: {

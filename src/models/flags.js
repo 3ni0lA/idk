@@ -9,6 +9,10 @@ const FlagSchema = new Schema({
     required: true,
     default: 0
   },
+  created_by: {
+    type: Number,
+    require: true
+  },
   description: {
     type: String,
     required: false

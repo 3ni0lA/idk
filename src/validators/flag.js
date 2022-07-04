@@ -6,6 +6,7 @@ const Joi = require('@hapi/joi')
 
 module.exports = Joi.object({
   id: Joi.string().min(1).max(Number.MAX_SAFE_INTEGER),
+  created_by: Joi.number().required().error(new Error('Creator is required')),
   description: Joi.string(),
   name: Joi.string().required().error(new Error('Name is required.')),
   rules: Joi.array().items(

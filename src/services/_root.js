@@ -53,18 +53,18 @@ class RootService {
   }
 
   processUpdateResult (result, event_name) {
-    if (result && result.ok && result.nModified) {
+    if (result && result.acknowledged && result.modifiedCount) {
       if (event_name) {
         appEvent.emit(event_name, result)
       }
       return this.processSuccessfulResponse(result)
     }
-    if (result && result.ok && !result.nModified) return this.processSuccessfulResponse(result, 210)
+    if (result && result.acknowledged && !result.modifiedCount) return this.processSuccessfulResponse(result, 210)
     return this.processFailedResponse('Update failed', 200)
   }
 
   processDeleteResult (result) {
-    if (result && result.nModified) return this.processSuccessfulResponse(result)
+    if (result && result.modifiedCount) return this.processSuccessfulResponse(result)
     return this.processFailedResponse('Deletion failed.', 200)
   }
 

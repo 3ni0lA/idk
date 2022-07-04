@@ -15,6 +15,10 @@ try {
       request.payload = await guestService.login(request, next)
       next()
     })
+    .get('/acceptance/:tenant_id/:user_id', async (request, __, next) => {
+      request.payload = await guestService.acceptInvitation(request, next)
+      next()
+    })
     .get('/activation/:key', async (request, __, next) => {
       request.payload = await guestService.activateRecord(request, next)
       next()

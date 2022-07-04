@@ -9,7 +9,7 @@ const jwt_sign = promisify(sign)
 const {
   JWT_ISSUER,
   JWT_SECRET
-} = require('../../../config')
+} = require('../../config')
 
 module.exports = {
   checkPasswordMatch: async (plain_password, encrypted_password) => {

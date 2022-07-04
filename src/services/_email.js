@@ -54,14 +54,17 @@ const configureMessage = (recipient, value, type) => {
         <h2>${value}</h2>
       `
       break
-    case 'otp':
-      subject = 'Flagly OTP'
+    case 'invitation':
+      subject = 'Flagly: User invitation'
       html = `
-        <p>Kindly use this OTP to log in:</p> 
+        <p>Hello ${value.first_name},</p> 
         <br/>
-        <p><b>${value}</b></p>
+        <p>You have been invited to ${value.name}. Log in the following details:</p>
+        <p> Kindly click the link to activate your account: <a href=${gm_client_uri}/acceptance/${value.tenant_id}/${value.user_id}>Accept Invitation</a><p>
         <br/>
-        <p style="color: red;">It will expire after five (5) minutes.</p>
+        <p> Email address: ${value.email_address}</p>
+        <p> Password: ${value.password} </p>
+        <p style="color: red;">Please change your password.</p>
       `
       break
     case 'recovery':
