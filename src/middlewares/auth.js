@@ -96,7 +96,7 @@ const authenticate_user = async (request, __, next) => {
       issuer: JWT_ISSUER
     })
 
-    const { tenants, is_admin } = verified_data
+    const { id: user_id, tenants, is_admin } = verified_data
     const is_valid_tenant_id = tenants.find((tenant) => tenant.id === Number(tenant_id))
     if (!tenant_id || isNaN(tenant_id) || !is_valid_tenant_id) {
       return next(rootService.processFailedResponse('Unauthorized', 403))
@@ -104,6 +104,7 @@ const authenticate_user = async (request, __, next) => {
 
     request.is_super_admin = verified_data.is_superadmin
     request.tenant_id = is_admin ? { $exists: true } : tenant_id
+    request.user_id = user_id
     next()
   } catch (e) {
     logger.error(e.message, 'authenticate_user')

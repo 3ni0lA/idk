@@ -13,6 +13,13 @@ const EnvironmentSchema = new Schema({
     type: String,
     required: true
   },
+  created_by: {
+    type: Number,
+    required: true
+  },
+  description: {
+    type: String
+  },
   name: {
     type: String,
     required: true

@@ -23,14 +23,16 @@ class EnvironmentService extends RootService {
 
   async createRecord (request, next) {
     try {
-      const { body, tenant_id } = request
-      const { error } = environmentSchema.validate(body)
+      const { body, tenant_id, user_id } = request
+      const { error } = environmentSchema.validate({ ...body, created_by: user_id })
 
       if (error) throw new Error(error)
 
       const code = generateCodeFromName(body.code || body.name)
+      const { data } = await this.environment_controller.readRecords({ code })
+      if (data && data.length) return this.processFailedResponse('Environment name/code is already in use')
       delete body.id
-      const result = await this.environment_controller.createRecord({ ...body, code, tenant_id })
+      const result = await this.environment_controller.createRecord({ ...body, code, created_by: user_id, tenant_id })
       return this.processSingleRead(result)
     } catch (e) {
       logger.error(e.message, 'createRecord')
