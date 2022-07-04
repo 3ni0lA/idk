@@ -69,10 +69,15 @@ const authenticate_user = async (request, __, next) => {
     const { authorization } = request.headers
     const {
       body: { tenant_id: body_tenant_id },
-      params: { tenant_id: params_tenant_id }
+      params: { tenant_id: params_tenant_id },
+      query: { tenant_id: query_tenant_id }
     } = request
 
-    const tenant_id = params_tenant_id || body_tenant_id
+    let tenant_id = 0
+    if (query_tenant_id) tenant_id = query_tenant_id
+    if (params_tenant_id) tenant_id = params_tenant_id
+    if (body_tenant_id) tenant_id = body_tenant_id
+
     if (!authorization) {
       return next(rootService.processFailedResponse('Unauthorized', 403))
     }
@@ -92,7 +97,7 @@ const authenticate_user = async (request, __, next) => {
     })
 
     const { tenants, is_admin } = verified_data
-    const is_valid_tenant_id = tenants.find((tenant) => tenant.id === tenant_id)
+    const is_valid_tenant_id = tenants.find((tenant) => tenant.id === Number(tenant_id))
     if (!tenant_id || isNaN(tenant_id) || !is_valid_tenant_id) {
       return next(rootService.processFailedResponse('Unauthorized', 403))
     }
