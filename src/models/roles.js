@@ -9,11 +9,19 @@ const RoleSchema = new Schema({
     required: true,
     default: 0
   },
+  created_by: {
+    type: Number,
+    required: true
+  },
+  description: {
+    type: String
+  },
   environments: [{
     code: String,
+    label: String,
     value: {
       type: String,
-      enum: ['read', 'write', 'execute']
+      enum: ['read', 'write', 'full']
     }
   }],
   name: {

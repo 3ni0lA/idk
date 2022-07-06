@@ -27,13 +27,13 @@ class RoleService extends RootService {
 
   async createRecord (request, next) {
     try {
-      const { body } = request
-      const { error } = roleSchema.validate(body)
+      const { body, tenant_id, user_id } = request
+      const { error } = roleSchema.validate({ ...body, created_by: user_id })
 
       if (error) throw new Error(error)
 
       delete body.id
-      const result = await this.role_controller.createRecord({ ...body })
+      const result = await this.role_controller.createRecord({ ...body, created_by: user_id, tenant_id })
       return this.processSingleRead(result)
     } catch (e) {
       logger.error(e.message, 'createRecord')
