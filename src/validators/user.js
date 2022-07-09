@@ -10,5 +10,6 @@ module.exports = Joi.object({
   first_name: Joi.string().required().error(new Error('First name is required.')),
   last_name: Joi.string().required().error(new Error('Last name is required.')),
   password: Joi.string().required().error(new Error('Password is required.')),
-  role: Joi.number().required().error(new Error('Role is required.'))
+  role: Joi.number().required().error(new Error('Role is required.')),
+  tenant_id: Joi.number()
 })

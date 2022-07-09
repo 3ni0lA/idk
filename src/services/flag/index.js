@@ -27,13 +27,19 @@ class FlagService extends RootService {
 
   async createRecord (request, next) {
     try {
-      const { body } = request
-      const { error } = flagSchema.validate(body)
+      const { body, user_id, tenant_id } = request
+      const data = {
+        ...body,
+        name: body.name.trim().replace(/[ ]+/g, '.'),
+        created_by: user_id,
+        tenant_id
+      }
+      const { error } = flagSchema.validate(data)
 
       if (error) throw new Error(error)
 
       delete body.id
-      const result = await this.flag_controller.createRecord({ ...body })
+      const result = await this.flag_controller.createRecord(data)
       return this.processSingleRead(result)
     } catch (e) {
       logger.error(e.message, 'createRecord')
@@ -58,9 +64,9 @@ class FlagService extends RootService {
 
   async readRecordsByFilter (request, next) {
     try {
-      const { query } = request
+      const { query, tenant_id } = request
 
-      const result = await this.handleDatabaseRead(this.flag_controller, query)
+      const result = await this.handleDatabaseRead(this.flag_controller, query, { tenant_id })
       return this.processMultipleReadResults(result)
     } catch (e) {
       logger.error(e.message, 'readRecordsByFilter')

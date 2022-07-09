@@ -41,10 +41,10 @@ class UserService extends RootService {
 
   async readRecordById (request, next) {
     try {
-      const { id } = request.params
+      const { params: { id }, tenant_id } = request
       if (!id) return next(this.processFailedResponse('Invalid ID supplied.'))
 
-      const result = await this.user_controller.readRecords({ id, is_active: true })
+      const result = await this.user_controller.readRecords({ id, tenant_id, is_active: true })
       return this.processSingleRead(result.data[0])
     } catch (e) {
       logger.error(e.message, 'readRecordById')
@@ -55,9 +55,11 @@ class UserService extends RootService {
 
   async readRecordsByFilter (request, next) {
     try {
-      const { query } = request
+      const { query, tenant_id } = request
 
-      const result = await this.handleDatabaseRead(this.user_controller, query)
+      const result = await this.handleDatabaseRead(this.user_controller, query, {
+        'tenants.id': tenant_id
+      })
       return this.processMultipleReadResults(result)
     } catch (e) {
       logger.error(e.message, 'readRecordsByFilter')

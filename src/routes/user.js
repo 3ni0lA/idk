@@ -15,10 +15,6 @@ try {
       request.payload = await userService.invite(request, next)
       next()
     })
-    .post('/remove', async (request, __, next) => {
-      request.payload = await userService.remove(request, next)
-      next()
-    })
     .get('/', async (request, __, next) => {
       request.payload = await userService.readRecordsByFilter(request, next)
       next()
@@ -44,7 +40,7 @@ try {
       next()
     })
     .delete('/', async (request, __, next) => {
-      request.payload = await userService.deleteRecords(request, next)
+      request.payload = await userService.remove(request, next)
       next()
     })
 } catch (e) {

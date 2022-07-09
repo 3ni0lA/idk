@@ -14,23 +14,26 @@ const FlagSchema = new Schema({
     require: true
   },
   description: {
-    type: String,
-    required: false
+    type: String
   },
   name: {
     type: String,
     required: true
   },
-  rules: [{
-    environments: Object,
+  environments: [{
+    code: String,
     criteria: [{
       property: String,
-      condition: {
-        type: String,
-        enum: ['all', 'some', 'none']
-      },
-      value: Boolean
+      values: Array
     }]
+  }],
+  criteria: [{
+    property: String,
+    condition: {
+      type: String,
+      enum: ['all', 'some', 'none']
+    },
+    evaluation: Boolean
   }],
   tenant_id: {
     type: Number,

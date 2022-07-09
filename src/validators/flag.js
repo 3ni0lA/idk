@@ -9,16 +9,23 @@ module.exports = Joi.object({
   created_by: Joi.number().required().error(new Error('Creator is required')),
   description: Joi.string(),
   name: Joi.string().required().error(new Error('Name is required.')),
-  rules: Joi.array().items(
+  environments: Joi.array().items(
     Joi.object({
-      enviroments: Joi.object().required().error(new Error('Environments must be specified.')),
+      code: Joi.string().required(),
       criteria: Joi.array().items(
         Joi.object({
-          property: Joi.string().required().error(new Error('Criterion property must be specified.')),
-          condition: Joi.string().required().error(new Error('Criterion condition be specified.')),
-          value: Joi.boolean().required().error(new Error('Criterion value must be specified.'))
+          property: Joi.string(),
+          values: Joi.array()
         })
-      ).required().not().empty().error(new Error('Criteria must be specified'))
+      )
     })
-  ).required().error(new Error('Rules are required.'))
+  ).required().error(new Error('Environments must be specified.')),
+  criteria: Joi.array().items(
+    Joi.object({
+      property: Joi.string().required().error(new Error('Criterion property must be specified.')),
+      condition: Joi.string().required().error(new Error('Criterion condition be specified.')),
+      evaluation: Joi.boolean().required().error(new Error('Criterion value must be specified.'))
+    })
+  ).required().not().empty().error(new Error('Criteria must be specified')),
+  tenant_id: Joi.number()
 })
