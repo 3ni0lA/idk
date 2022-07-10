@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 // const axios = require('axios').default
 const { app_logger } = require('../utilities/logger')
 const RootService = require('../services/_root')
+const Controller = require('../controllers')
+const tenantController = new Controller('Tenant')
 const rootService = new RootService()
 const {
   DEFAULT_TOKEN,
@@ -14,33 +16,31 @@ const {
 } = require('../../config.js')
 
 const logger = app_logger('Authentication Middleware')
-// const authenticate_api_key = async (request, __, next) => {
-//   try {
-//     const { authorization } = request.headers
-//     if (!authorization) {
-//       return next(rootService.processFailedResponse('Unauthorized', 403))
-//     }
+const authenticate_api_key = async (request, __, next) => {
+  try {
+    const { authorization } = request.headers
+    if (!authorization) {
+      return next(rootService.processFailedResponse('Unauthorized', 403))
+    }
 
-//     const [, api_key] = authorization.split(' ')
-//     if (!api_key) {
-//       return next(rootService.processFailedResponse('Unauthorized', 403))
-//     }
+    const [, api_key] = authorization.split(' ')
+    if (!api_key) {
+      return next(rootService.processFailedResponse('Unauthorized', 403))
+    }
 
-//     const { error, payload } = (
-//       await axios.get(`${gm_iam_uri}/verify/${api_key}`)
-//     ).data
+    const { data } = await tenantController.readRecords({ api_key })
 
-//     if (error) {
-//       return next(rootService.processFailedResponse('Unauthorized', 403))
-//     }
+    if (!data || !data[0]) {
+      return next(rootService.processFailedResponse('Unauthorized', 403))
+    }
 
-//     request.tenant_id = payload.org_id
-//     next()
-//   } catch (e) {
-//     logger.error(e.message, 'authenticate_api_key')
-//     next(rootService.processFailedResponse('Unauthorized', 403))
-//   }
-// }
+    request.tenant_id = data[0].id
+    next()
+  } catch (e) {
+    logger.error(e.message, 'authenticate_api_key')
+    next(rootService.processFailedResponse('Unauthorized', 403))
+  }
+}
 
 // const authenticate_param_api_key = async (request, __, next) => {
 //   try {
@@ -113,7 +113,7 @@ const authenticate_user = async (request, __, next) => {
 }
 
 module.exports = {
-  // authenticate_api_key,
+  authenticate_api_key,
   // authenticate_param_api_key,
   authenticate_user
 }

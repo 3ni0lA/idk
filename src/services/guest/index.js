@@ -12,6 +12,7 @@ const logger = app_logger('GuestService')
 
 const { checkPasswordMatch, encryptPassword, generateAuthenticationToken, validatePassword } = require('../../utilities/encryption')
 const { sendEmail } = require('../_email')
+const { generateAPIKey } = require('../../utilities/generic')
 
 class GuestService extends _RootService {
   constructor (tenant_controller, user_controller) {
@@ -127,7 +128,8 @@ class GuestService extends _RootService {
       }
 
       const encrypted_password = await encryptPassword(password_validation.message)
-      const created_record = await this.tenant_controller.createRecord({ name })
+      const api_key = generateAPIKey()
+      const created_record = await this.tenant_controller.createRecord({ name, api_key })
       const { _id, id: tenant_id } = created_record
       if (!created_record || !_id) {
         return this.processFailedResponse('Account creation failed.')

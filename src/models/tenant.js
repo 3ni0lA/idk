@@ -9,6 +9,10 @@ const TenantSchema = new Schema({
     required: true,
     default: 0
   },
+  api_key: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true

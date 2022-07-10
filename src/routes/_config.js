@@ -4,10 +4,11 @@
 
 const router = require('express').Router()
 const { handle404, handleError, setupRequest, processResponse } = require('../middlewares/http')
-const { authenticate_user } = require('../middlewares/auth')
+const { authenticate_user, authenticate_api_key } = require('../middlewares/auth')
 
 /** Route Handlers */
 const sample_route_handler = require('./sample')
+const api_one = require('./v1/_config')
 const environment_route_handler = require('./environment')
 const flag_route_handler = require('./flag')
 const guest_route_handler = require('./guest')
@@ -18,6 +19,7 @@ const user_route_handler = require('./user')
 /** Cross Origin Handling */
 router.use(setupRequest)
 router.use('/guests', guest_route_handler)
+router.use('/api/v1', authenticate_api_key, api_one)
 router.use('/environments', authenticate_user, environment_route_handler)
 router.use('/flags', authenticate_user, flag_route_handler)
 router.use('/roles', authenticate_user, role_route_handler)

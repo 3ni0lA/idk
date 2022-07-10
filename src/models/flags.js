@@ -31,7 +31,7 @@ const FlagSchema = new Schema({
     property: String,
     condition: {
       type: String,
-      enum: ['all', 'some', 'none']
+      enum: ['some', 'none', 'greater', 'less']
     },
     evaluation: Boolean
   }],

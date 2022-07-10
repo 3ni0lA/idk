@@ -39,6 +39,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "pm2": "pm2 start 'node index.js' --name flagly_control --watch ~/apps/flagly/control/src",
     "lint": "eslint .  --ext .js",
     "lint-fix": "eslint --fix .  --ext .js",
     "test": "nyc mocha --recursive -w -c || true"

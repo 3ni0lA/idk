@@ -31,6 +31,10 @@ try {
       request.payload = await tenantService.updateRecords(request, next)
       next()
     })
+    .put('/:id/key', async (request, __, next) => {
+      request.payload = await tenantService.generateAPIKey(request, next)
+      next()
+    })
     .delete('/:id', async (request, __, next) => {
       request.payload = await tenantService.deleteRecordById(request, next)
       next()

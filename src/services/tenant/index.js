@@ -13,6 +13,7 @@ const {
   buildQuery,
   buildWildcardOptions
 } = require('../../utilities/query')
+const { generateAPIKey } = require('../../utilities/generic')
 
 class TenantService extends RootService {
   constructor (
@@ -141,6 +142,20 @@ class TenantService extends RootService {
       return this.processDeleteResult({ ...result })
     } catch (e) {
       logger.error(e.message, 'deleteRecords')
+      const err = this.processFailedResponse(e.message, 500)
+      next(err)
+    }
+  }
+
+  //
+  async generateAPIKey (request, next) {
+    try {
+      const { tenant_id } = request
+      const api_key = generateAPIKey()
+      const result = await this.tenant_controller.updateRecords({ id: tenant_id }, { api_key })
+      return this.processUpdateResult({ ...result, api_key })
+    } catch (e) {
+      logger.error(e.message, 'generateAPIKey')
       const err = this.processFailedResponse(e.message, 500)
       next(err)
     }
