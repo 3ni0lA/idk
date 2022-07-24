@@ -15,8 +15,13 @@ class FlagService extends RootService {
       const { tenant_id, body: { environment, payload }, params: { name } } = request
 
       const { data } = await this.flag_controller.readRecords({ name, tenant_id })
+      if (!data[0]) return this.processFailedResponse('No flags found.')
+
       const { criteria, environments: envs } = data[0]
-      const { criteria: env_criteria } = envs.find((env) => env.code === environment)
+      const env = envs.find((env) => env.code === environment)
+      if (!env) return this.processFailedResponse('No flags found.')
+
+      const { criteria: env_criteria } = env
       const values_by_property = env_criteria.reduce((sac, criterion) => ({ ...sac, [criterion.property]: criterion.values }), {})
       const condition_by_property = criteria.reduce((sac, criterion) => ({
         ...sac,
@@ -76,7 +81,7 @@ class FlagService extends RootService {
 
       return this.processSuccessfulResponse({ is_permitted })
     } catch (e) {
-      logger.error(e.message, 'checkPermission')
+      logger.error(e.message, 'checkFeaturePermission')
       const err = this.processFailedResponse(e.message, 500)
       next(err)
     }
