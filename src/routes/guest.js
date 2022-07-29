@@ -7,7 +7,7 @@ const guestService = require('../services/guest')
 
 try {
   router
-    .post('/', async (request, __, next) => {
+    .post('/register', async (request, __, next) => {
       request.payload = await guestService.createRecord(request, next)
       next()
     })
