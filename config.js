@@ -20,18 +20,10 @@ const config = {
     mail_host: 'mail.go-mailer.net',
     mail_port: 25
   },
-  // staging: {
-  //   app_db_uri: '',
-  //   app_port: 5100,
-  //   gm_client_uri: "https://app.flagly.dev",
-
-  //   mail_host: 'mail.go-mailer.net',
-  //   mail_port: 25
-  // },
   production: {
     app_db_uri: `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.hf2ex.mongodb.net/flagly_control`,
     app_port: 5100,
-    gm_client_uri: 'https://flagly.go-mailer.com',
+    gm_client_uri: 'https://app.go-flags.com',
 
     mail_host: 'mail.go-mailer.net',
     mail_port: 25

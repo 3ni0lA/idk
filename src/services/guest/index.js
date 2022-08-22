@@ -117,7 +117,7 @@ class GuestService extends _RootService {
       }
 
       const validated_email = email_validation.message
-      const user_record = await this.tenant_controller.readRecords({ email_address })
+      const user_record = await this.user_controller.readRecords({ email_address })
       if (user_record && user_record.data.length) {
         return this.processFailedResponse('Email address already in use.')
       }
