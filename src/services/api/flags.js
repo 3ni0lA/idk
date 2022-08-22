@@ -30,7 +30,6 @@ class FlagService extends RootService {
 
       // process permissions
       const permissions = []
-      let is_permitted = false
       for (const key in condition_by_property) {
         if (!payload[key]) {
           permissions.push(false)
@@ -78,7 +77,7 @@ class FlagService extends RootService {
         }
       }
 
-      is_permitted = permissions.reduce((result, value) => (result && value), true)
+      const is_permitted = permissions.reduce((result, value) => (result && value), true)
 
       return this.processSuccessfulResponse({ is_permitted })
     } catch (e) {
