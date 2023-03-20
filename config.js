@@ -37,5 +37,6 @@ module.exports = {
   MAIL_USER,
   MAIL_PASS,
   NODE_ENV,
+  ...process.env,
   ...config[NODE_ENV || 'development']
 }

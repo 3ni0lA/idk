@@ -2,6 +2,7 @@
  * @author Oguntuberu Nathan O. <nateoguns.work@gmail.com>
  **/
 //
+const { CLIENT_URI } = require('../../../config')
 const _RootService = require('../_root')
 const Controller = require('../../controllers')
 const { CREATED } = require('../../events/constants/tenant')
@@ -11,8 +12,8 @@ const { app_logger } = require('../../utilities/logger')
 const logger = app_logger('GuestService')
 
 const { checkPasswordMatch, encryptPassword, generateAuthenticationToken, validatePassword } = require('../../utilities/encryption')
-const { sendEmail } = require('../_email')
 const { generateAPIKey } = require('../../utilities/generic')
+const { dispatchTransactional } = require('../../clients/go-mailer')
 
 class GuestService extends _RootService {
   constructor (tenant_controller, user_controller) {
@@ -96,7 +97,14 @@ class GuestService extends _RootService {
         return this.processFailedResponse(email_validation.message, 400)
       }
 
-      await sendEmail('info@go-mailer.com', request.body, 'contact_us')
+      await dispatchTransactional({
+        recipient_email: 'info@go-mailer.com',
+        data: {
+          client_uri: CLIENT_URI,
+          ...request.body
+        },
+        template_code: 'CONTACT_US'
+      })
       return this.processSuccessfulResponse("Thank you, we'll reach back shortly.")
     } catch (e) {
       logger.console(e.message, 'contactUs')
@@ -149,7 +157,14 @@ class GuestService extends _RootService {
         ]
       })
 
-      await sendEmail(validated_email, user_id, 'activation')
+      await dispatchTransactional({
+        recipient_email: validated_email,
+        template_code: 'ACTIVATION',
+        data: {
+          client_uri: CLIENT_URI,
+          value: user_id
+        }
+      })
       this.processCreationResult({ tenant_id, user_id }, CREATED)
       return this.processSuccessfulResponse(`Success. Activation link sent to ${validated_email}`)
     } catch (e) {
@@ -200,7 +215,14 @@ class GuestService extends _RootService {
         recovery_id = recovery_record._id
       }
 
-      await sendEmail(validated_email, recovery_id, 'recovery')
+      await dispatchTransactional({
+        recipient_email: validated_email,
+        data: {
+          client_uri: CLIENT_URI,
+          value: recovery_id
+        },
+        template_code: 'RECOVERY'
+      })
       return this.processSuccessfulResponse(`Recovery details sent to ${validated_email}.`)
     } catch (e) {
       logger.console(e.message, 'initiate_password_reset')
@@ -229,13 +251,20 @@ class GuestService extends _RootService {
       const validated_password = password_validation.message
 
       const result = await this.user_controller.readRecords({
-        email_address: validated_email
+        email_address
       })
 
       if (result && result.data.length) {
         const user_record = result.data[0]
         if (!user_record.is_active) {
-          await sendEmail(validated_email, user_record._id, 'activation')
+          await dispatchTransactional({
+            recipient_email: validated_email,
+            data: {
+              client_uri: CLIENT_URI,
+              value: user_record._id
+            },
+            template_code: 'ACTIVATION'
+          })
           return this.processFailedResponse('Account inactive. Activation link resent!')
         }
 
@@ -315,7 +344,14 @@ class GuestService extends _RootService {
       }
 
       const { _id } = user_record.data[0]
-      await sendEmail(validated_email, _id, 'activation')
+      await dispatchTransactional({
+        recipient_email: validated_email,
+        data: {
+          client_uri: CLIENT_URI,
+          value: _id
+        },
+        template_code: 'ACTIVATION'
+      })
       return this.processSuccessfulResponse(`Success. Activation link sent to ${validated_email}`)
     } catch (e) {
       logger.console(e.message, 'resend_activation_key')

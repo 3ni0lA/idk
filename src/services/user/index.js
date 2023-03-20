@@ -1,7 +1,7 @@
 /**
  * @author Oguntuberu Nathan O. <nateoguns.work@gmail.com>
  **/
-//
+const { CLIENT_URI } = require('../../../config')
 const RootService = require('../_root')
 const Controller = require('../../controllers')
 const userController = new Controller('User')
@@ -10,8 +10,8 @@ const { app_logger } = require('../../utilities/logger')
 const logger = app_logger('UserService')
 
 const { buildQuery, buildWildcardOptions } = require('../../utilities/query')
-const { sendEmail } = require('../_email')
 const { encryptPassword } = require('../../utilities/encryption')
+const { dispatchTransactional } = require('../../clients/go-mailer')
 
 class UserService extends RootService {
   constructor (user_controller) {
@@ -203,19 +203,20 @@ class UserService extends RootService {
       }
 
       if (is_successful) {
-        await sendEmail(
-          validated_email,
-          {
-            email_address,
+        await dispatchTransactional({
+          recipient_email: validated_email,
+          template_code: 'USER_INVITE',
+          data: {
+            client_uri: CLIENT_URI,
+            email_address: validated_email,
             first_name,
             last_name,
             name,
             tenant_id,
             user_id,
             password: is_user_exists ? '******' : password
-          },
-          'invitation'
-        )
+          }
+        })
         return this.processSuccessfulResponse(`Success. Invitation sent to ${validated_email}`)
       }
 
