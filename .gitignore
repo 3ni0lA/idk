@@ -1,3 +1,5 @@
-.env
-node_modules/
-logs/
+.vscod
+hosts 
+note 
+vault_pass.txt
+vault3.yml
