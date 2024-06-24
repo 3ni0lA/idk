@@ -1,0 +1,38 @@
+[2024-06-21T22:11:01.118Z : [31merror[39m] - uncaughtException: ENOENT: no such file or directory, open '/home/ubuntu/flagly-control/logs/request.log'
+Error: ENOENT: no such file or directory, open '/home/ubuntu/flagly-control/logs/request.log'
+[2024-06-22T11:53:12.910Z : [31merror[39m] - uncaughtException: listen EADDRINUSE: address already in use :::5100
+Error: listen EADDRINUSE: address already in use :::5100
+    at Server.setupListenHandle [as _listen2] (net.js:1310:16)
+    at listenInCluster (net.js:1358:12)
+    at Server.listen (net.js:1444:7)
+    at Function.listen (/home/ubuntu/flagly-control/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/home/ubuntu/flagly-control/index.js:38:5)
+    at Module._compile (internal/modules/cjs/loader.js:999:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+    at Module.load (internal/modules/cjs/loader.js:863:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)
+[2024-06-22T11:53:40.731Z : [31merror[39m] - uncaughtException: listen EADDRINUSE: address already in use :::5100
+Error: listen EADDRINUSE: address already in use :::5100
+    at Server.setupListenHandle [as _listen2] (net.js:1310:16)
+    at listenInCluster (net.js:1358:12)
+    at Server.listen (net.js:1444:7)
+    at Function.listen (/home/ubuntu/flagly-control/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/home/ubuntu/flagly-control/index.js:38:5)
+    at Module._compile (internal/modules/cjs/loader.js:999:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+    at Module.load (internal/modules/cjs/loader.js:863:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)
+[2024-06-22T11:53:43.363Z : [31merror[39m] - uncaughtException: listen EADDRINUSE: address already in use :::5100
+Error: listen EADDRINUSE: address already in use :::5100
+    at Server.setupListenHandle [as _listen2] (net.js:1310:16)
+    at listenInCluster (net.js:1358:12)
+    at Server.listen (net.js:1444:7)
+    at Function.listen (/home/ubuntu/flagly-control/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/home/ubuntu/flagly-control/index.js:38:5)
+    at Module._compile (internal/modules/cjs/loader.js:999:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
+    at Module.load (internal/modules/cjs/loader.js:863:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:708:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)

@@ -21,7 +21,7 @@ const config = {
     mail_port: 25
   },
   production: {
-    app_db_uri: `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.hf2ex.mongodb.net/flagly_control`,
+    app_db_uri: `mongodb+srv://flaglyapi:266Yq95Povew3x2v@apidatabase.kx1uswj.mongodb.net/?retryWrites=true&w=majority&appName=apidatabase`,
     app_port: 5100,
     gm_client_uri: 'https://app.go-flags.com',
 
