@@ -1,0 +1,1 @@
+147.182.237.106 ansible_ssh_private_key_file=home/ubuntu/.ssh ansible_user=root 
