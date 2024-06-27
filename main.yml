@@ -6,8 +6,6 @@
   vars_files:
     - vars.yml
 
- 
-
   tasks:
     - name: Update APT repo
       become: true
@@ -44,8 +42,6 @@
 
 
     # Perform subsequent tasks as the new user
-  
-
     - name: Install Node.js and npm
       ansible.builtin.apt:
         name:
