@@ -1,0 +1,7 @@
+ vars:
+    # New user details
+    app_user: "eniola"
+    app_dir: "/home/eniola/app/flagly-control-2.0"
+    app_user_password: "horizon"
+    app_user_home: "/home/eniola"
+    app_user_ssh_key_path: "/home/eniola/.ssh/"
