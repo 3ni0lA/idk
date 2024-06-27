@@ -3,15 +3,10 @@
   hosts: 147.182.237.106
   become: true
   
+  vars_files:
+    - vars.yml
 
-  vars:
-    # New user details
-    app_user: "eniola"
-    app_dir: "/home/eniola/app/flagly-control-2.0"
-    app_user_password: "horizon"
-    app_user_home: "/home/eniola"
-    app_user_ssh_key_path: "/home/eniola/.ssh/"
-
+ 
 
   tasks:
     - name: Update APT repo
@@ -81,7 +76,7 @@
       become: true
       become_user: "{{ app_user }}"
       ansible.builtin.shell: |
-        echo "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" > gh_token.txt;
+        echo  "{{ gh_token }}" > gh_token.txt;
         gh auth login --with-token < gh_token.txt;
       
 
