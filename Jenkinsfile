@@ -9,7 +9,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(credentialsId: 'my-ssh-agent') {
-                    sh 'ssh nodejs@137.184.193.255 "cd /app/practice-repo; git pull origin testing; npm install; npm start pm2"'
+                    sh 'ssh nodejs@137.184.193.255 "cd /app/practice-repo; git pull origin main; npm install; npm start pm2"'
                 }
             }
         }
