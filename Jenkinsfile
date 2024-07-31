@@ -16,6 +16,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(credentials: ['my-ssh-agent']) {
+                    sh 'ssh-add -L' // List loaded keys for debugging
                     sh """
                     ssh ${DEPLOY_USER}@${DEPLOY_HOST} << EOF
                     cd ${DEPLOY_DIR}
