@@ -18,13 +18,13 @@ pipeline {
                 sshagent(credentials: ['my-ssh-agent']) {
                     sh 'ssh-add -L' // List loaded keys for debugging
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} 'bash -s' << EOF
-                    cd ${DEPLOY_DIR}
-                    git config pull.rebase false # Set merge strategy
-                    git pull origin ${BRANCH}
-                    npm install 
-                    pm2 start npm -- start
-                    EOF
+                    ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} '
+                    cd ${DEPLOY_DIR} &&
+                    # git config pull.rebase false && # Set merge strategy
+                    git pull origin ${BRANCH} &&
+                    npm install &&
+                    pm2 restart npm || pm2 start npm -- start
+                    '
                     """
                 }
             }
