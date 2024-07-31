@@ -5,7 +5,7 @@ pipeline {
         BRANCH = 'main'
         DEPLOY_USER = 'nodejs'
         DEPLOY_HOST = '137.184.193.255'
-        DEPLOY_DIR = '/app/practice-repo'
+        DEPLOY_DIR = '/home/nodejs/app/practice-repo'
     }
     stages {
         stage('Checkout') {
